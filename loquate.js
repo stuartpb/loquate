@@ -1,6 +1,6 @@
 var Loquate; function(){
   function decoder(newlines) {
-    if(newlines === undefined) newlines = '\n';
+    newlines = newlines === undefined ? '\n' : newlines;
     return function decode(str){
       var decoded = decodeURIComponent(str.replace(/\+/g,' '));
       if(newlines || newlines === '')
@@ -15,6 +15,15 @@ var Loquate; function(){
     var decode = opts.decode;
     if(decode === undefined) {
       decode = (Loquate.decode || decoder)(opts.newlines);
+    }
+    var boolval;
+    var mirror = opts.onbool == 'key';
+    if (opts.onbool == 'undefined') {
+      boolval = undefined;
+    } else if (opts.boolval === undefined) {
+      boolval = true;
+    } else {
+      boolval = opts.boolval;
     }
     
     //The value we will return.
@@ -32,9 +41,9 @@ var Loquate; function(){
       
       //If there was no separator at all
       if(!match){
-        //Treat the whole thing as a key and give it a truth value
+        //Treat the whole thing as a key and give it a boolean value
         k = decode(pair);
-        v = true;
+        v = mirror ? k : boolval;
       } else {
         var eqindex = match.index
 
@@ -51,10 +60,9 @@ var Loquate; function(){
       //If this key has already been defined
       if(query.hasOwnProperty(k)){
 
-        //if the value at this key that's already been defined is 
-        //one of the two types we create the first time through,
-        //and not already an array like it would be after the second time
-        if(typeof query[k] == "string" || typeof query[k] == "boolean"){
+        //if this key has not yet been made an array
+        if(Array.isArray ? Array.isArray(query[k]) :
+          Object.prototype.toString.call(query[k]) === "[object Array]";){
           query[k] = [query[k]];
         }
         query[k].push(v);
@@ -70,7 +78,12 @@ var Loquate; function(){
   Loquate.decode = decoder;
 }();
 
-if(typeof location !== "undefined" && location.search && !location.hasOwnProperty('query')){
+//if the location object exists, there's a querystring
+//for this location, and adding a 'location.query'
+//wouldn't clobber anything
+if(typeof location !== "undefined" && location.search
+  && !('query' in location)){
+  //set location.query from the query part of the query string
   location.query = Loquate(location.search.slice(1));
 }
 
