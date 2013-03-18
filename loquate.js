@@ -6,7 +6,7 @@ var Loquate; (function(){
       if(newlines || newlines === '')
         return decoded.replace(/\r\n|\r|\n/g, newlines);
       else return decoded;
-    }
+    };
   }
   Loquate = function(str, opts) {
     opts = opts || {};
@@ -37,24 +37,24 @@ var Loquate; (function(){
       
       //Find the first key/value separator in it
       //(any later separators are part of the value)
-      var equals = pair.match(eq);
+      var sepmatch = pair.match(eq);
       
       //If there was no separator at all
-      if(!match){
+      if(!sepmatch){
         //Treat the whole thing as a key and give it a boolean value
         k = decode(pair);
         v = mirror ? k : boolval;
       } else {
-        var eqindex = match.index
+        var eqindex = sepmatch.index;
 
         // If `eq` is a global regex, the index will be missing
         // from the match array. You can solve this on the
         // input side by not ending your eq regex with "/g",
         // but if you can't do that, we'll handle it.
-        if(!eqindex) eqindex = pair.indexOf(match[0])
+        if(!eqindex) eqindex = pair.indexOf(sepmatch[0]);
   
         k = decode(pair.slice(0,eqindex));
-        v = decode(pair.slice(0,eqindex+match[0].length));
+        v = decode(pair.slice(0,eqindex+sepmatch[0].length));
       }
       
       //If this key has already been defined
@@ -74,7 +74,7 @@ var Loquate; (function(){
     }
   
     return query;
-  }
+  };
   Loquate.decode = decoder;
 })();
 
