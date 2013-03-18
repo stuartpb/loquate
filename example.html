@@ -1,0 +1,17 @@
+<script src="loquate.js"></script>
+<script>
+if(!location.query){ //if there's no query string on the URL
+  document.write('<form method="GET"><input name="name" value="Stuart">'+
+    '<input name="hairInches" value="1.2"> inches'+
+    '<input type="submit" value="I need some hair advice"></form>');   
+} else {
+  document.write('<h1>Should I, '
+    + (location.query.name || "Anonymous") + ', cut my hair?</h1>');
+  if(location.query.hairInches == 0)
+    document.write("<p>What hair?</p>");
+  else if(location.query.hairInches < 80)
+    document.write("<p>Ask a hairdresser</p>");
+  else if(location.query.hairInches < 221.54)
+    document.write("<p>Only if you like riding on escalators</p>");
+  else document.write("<p>Not now, you're setting the world record!</p>");
+}</script>
