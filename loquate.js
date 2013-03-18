@@ -54,7 +54,7 @@ var Loquate; (function(){
         if(!eqindex) eqindex = pair.indexOf(sepmatch[0]);
   
         k = decode(pair.slice(0,eqindex));
-        v = decode(pair.slice(0,eqindex+sepmatch[0].length));
+        v = decode(pair.slice(eqindex+sepmatch[0].length));
       }
       
       //If this key has already been defined
