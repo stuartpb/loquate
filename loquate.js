@@ -1,7 +1,8 @@
 var Loquate; (function(){
   var localLoquate;
-  function decoder(newlines) {
-    newlines = newlines === undefined ? '\n' : newlines;
+  function decoder(opts) {
+    opts = opts || {};
+    var newlines = opts.newlines === undefined ? '\n' : opts.newlines;
     return function decode(str){
       var decoded = decodeURIComponent(str.replace(/\+/g,' '));
       if(newlines || newlines === '')
@@ -15,11 +16,11 @@ var Loquate; (function(){
     var eq = opts.eq || '=';
     var decode = opts.decode;
     if(decode === undefined) {
-      decode = (localLoquate.decode || decoder)(opts.newlines);
+      decode = (localLoquate.decode || decoder)(opts);
     }
     var boolval;
-    var mirror = opts.onbool == 'key';
-    if (opts.onbool == 'undefined') {
+    var onbool = opts.onbool;
+    if (onbool == 'undefined') {
       boolval = undefined;
     } else if (opts.boolval === undefined) {
       boolval = true;
@@ -41,10 +42,17 @@ var Loquate; (function(){
       var sepmatch = pair.match(eq);
 
       //If there was no separator at all
-      if(!sepmatch){
-        //Treat the whole thing as a key and give it a boolean value
-        k = decode(pair);
-        v = mirror ? k : boolval;
+      if (!sepmatch && onbool != "ignore") {
+        if (onbool == "both") {
+          k = decode(pair);
+          v = k;
+        } else if (onbool == "value") {
+          k = boolval;
+          v = decode(pair);
+        } else {
+          k = decode(pair);
+          v = boolval;
+        }
       } else {
         var eqindex = sepmatch.index;
 
@@ -58,20 +66,23 @@ var Loquate; (function(){
         v = decode(pair.slice(eqindex+sepmatch[0].length));
       }
 
-      //If this key has already been defined
-      if(Object.prototype.hasOwnProperty.call(query,k)){
+      //If K was undefined, we're ignoring it
+      if(k !== undefined){
+        //If this key has already been defined
+        if(Object.prototype.hasOwnProperty.call(query,k)){
 
-        //if this key has not yet been made an array
-        if(Array.isArray ? Array.isArray(query[k]) :
-          Object.prototype.toString.call(query[k]) === "[object Array]"){
-          query[k] = [query[k]];
+          //if this key has not yet been made an array
+          if(Array.isArray ? Array.isArray(query[k]) :
+            Object.prototype.toString.call(query[k]) === "[object Array]"){
+            query[k] = [query[k]];
+          }
+          query[k].push(v);
+
+        //If this key has not yet been defined
+        } else {
+          query[k] = v;
         }
-        query[k].push(v);
-
-      //If this key has not yet been defined
-      } else {
-        query[k] = v;
-      }
+      } //if (k !== undefined)
     }
 
     return query;
