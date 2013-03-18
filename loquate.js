@@ -58,7 +58,7 @@ var Loquate; (function(){
       }
       
       //If this key has already been defined
-      if(query.hasOwnProperty(k)){
+      if(Object.prototype.hasOwnProperty.call(query,k)){
 
         //if this key has not yet been made an array
         if(Array.isArray ? Array.isArray(query[k]) :
