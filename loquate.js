@@ -1,4 +1,4 @@
-var Loquate; function(){
+var Loquate; (function(){
   function decoder(newlines) {
     newlines = newlines === undefined ? '\n' : newlines;
     return function decode(str){
@@ -62,7 +62,7 @@ var Loquate; function(){
 
         //if this key has not yet been made an array
         if(Array.isArray ? Array.isArray(query[k]) :
-          Object.prototype.toString.call(query[k]) === "[object Array]";){
+          Object.prototype.toString.call(query[k]) === "[object Array]"){
           query[k] = [query[k]];
         }
         query[k].push(v);
@@ -76,7 +76,7 @@ var Loquate; function(){
     return query;
   }
   Loquate.decode = decoder;
-}();
+})();
 
 //if the location object exists, there's a querystring
 //for this location, and adding a 'location.query'
