@@ -10,7 +10,7 @@ var Loquate; (function(){
       else return decoded;
     };
   }
-  Loquate = function(str, opts) {
+  localLoquate = function(str, opts) {
     opts = opts || {};
     var sep = opts.sep || /[&;]/g;
     var eq = opts.eq || '=';
