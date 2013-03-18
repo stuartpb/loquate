@@ -1,4 +1,5 @@
 var Loquate; (function(){
+  var localLoquate;
   function decoder(newlines) {
     newlines = newlines === undefined ? '\n' : newlines;
     return function decode(str){
@@ -14,7 +15,7 @@ var Loquate; (function(){
     var eq = opts.eq || '=';
     var decode = opts.decode;
     if(decode === undefined) {
-      decode = (Loquate.decode || decoder)(opts.newlines);
+      decode = (localLoquate.decode || decoder)(opts.newlines);
     }
     var boolval;
     var mirror = opts.onbool == 'key';
@@ -25,20 +26,20 @@ var Loquate; (function(){
     } else {
       boolval = opts.boolval;
     }
-    
+
     //The value we will return.
     var query = {};
-      
+
     //For every key/value
     var pairs = str.split(sep);
     for (var i = 0; i < pairs.length; i++) {
       var pair = pairs[i];
       var k,v;
-      
+
       //Find the first key/value separator in it
       //(any later separators are part of the value)
       var sepmatch = pair.match(eq);
-      
+
       //If there was no separator at all
       if(!sepmatch){
         //Treat the whole thing as a key and give it a boolean value
@@ -52,11 +53,11 @@ var Loquate; (function(){
         // input side by not ending your eq regex with "/g",
         // but if you can't do that, we'll handle it.
         if(!eqindex) eqindex = pair.indexOf(sepmatch[0]);
-  
+
         k = decode(pair.slice(0,eqindex));
         v = decode(pair.slice(eqindex+sepmatch[0].length));
       }
-      
+
       //If this key has already been defined
       if(Object.prototype.hasOwnProperty.call(query,k)){
 
@@ -72,11 +73,16 @@ var Loquate; (function(){
         query[k] = v;
       }
     }
-  
+
     return query;
   };
+  Loquate = localLoquate;
   Loquate.decode = decoder;
 })();
+
+if(typeof module !== "undefined") {
+  module.exports = Loquate;
+}
 
 //if the location object exists, there's a querystring
 //for this location, and adding a 'location.query'
@@ -85,8 +91,4 @@ if(typeof location !== "undefined" && location.search
   && !('query' in location)){
   //set location.query from the query part of the query string
   location.query = Loquate(location.search.slice(1));
-}
-
-if(typeof module !== "undefined") {
-  module.exports = Loquate;
 }
