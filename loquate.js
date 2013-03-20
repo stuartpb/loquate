@@ -19,6 +19,7 @@ var Loquate; (function(){
       decode = (localLoquate.decode || decoder)(opts);
     }
     var boolval;
+    var multival = opts.multival;
     var onbool = opts.onbool;
     if (onbool == 'undefined') {
       boolval = undefined;
@@ -68,8 +69,10 @@ var Loquate; (function(){
 
       //If K was undefined, we're ignoring it
       if(k !== undefined){
-        //If this key has already been defined
-        if(Object.prototype.hasOwnProperty.call(query,k)){
+        //If this key has already been defined (or we're treating ever
+        if( (Object.prototype.hasOwnProperty.call(query,k)
+          && multival != "last" && multival != "first")
+          || multival == "always"){
 
           //if this key has not yet been made an array
           if(Array.isArray ? Array.isArray(query[k]) :
@@ -79,7 +82,7 @@ var Loquate; (function(){
           query[k].push(v);
 
         //If this key has not yet been defined
-        } else {
+        } else if (multival != "first"){
           query[k] = v;
         }
       } //if (k !== undefined)
