@@ -63,21 +63,30 @@ You can override pretty much any constant behavior on Loquate with options:
 - **onbool**: The behavior to use when encountering elements without pair
   separators (eg. `?keybyitself&anotherlonelykey`). If unrecognized, treats the
   element as a key and assigns it the value of **boolval**.
-  - `"undefined"`: Assign the key to the value of `undefined`. (This is
+  - `'undefined'`: Assign the key to the value of `undefined`. (This is
     controlled by **onbool** because setting **boolval** to `undefined` will
     cause it to use the default value.
-  - `"ignore"`: Ignore completely.
-  - `"both"`: Assign the key at the name of the element to the value of the
+  - `'ignore'`: Ignore completely.
+  - `'both'`: Assign the key at the name of the element to the value of the
     element.
-  - `"value"` Assign the value of the element to the key named in **boolval**.
+  - `'value'` Assign the value of the element to the key named in **boolval**.
+    (If multiple values are present in this fashion, they will be assigned to
+    the key accoring to the behavior specified in **multidef**.)
 - **boolval**: In the absence of a recognized value for **onbool**, the value
   to assign to keys without specified values. Defaults to `true` if `boolval`
   is `undefined`.
+- **multidef**: Which behavior to use when encountering the same key multiple
+    times.
+    - `'first'`: Only use the dirst definition of the value.
+    - `'last'`: Only use the last definition of the value.
+    - `'always'`: Use an array for every value, defined multiple times or not.
+      - This allows for closer matching of Python's behavior.
 
 ## Compatiblity
 
 Query string handling is surprisingly ill-defined, and different environments
-have different behaviors. Here are the options to match their results.
+have different behaviors. Here are the options to match the behavior of other
+querystring parsing implementations.
 
 ### Node querystring module
 ```js
@@ -88,8 +97,9 @@ have different behaviors. Here are the options to match their results.
 ### Python (urlparse/urllib.parse).parse_qs
 ```js
 { sep: '&',
-  onbool: "ignore", //omit this line for keep_blank_values = True behavior
+  onbool: 'ignore', //omit this line for keep_blank_values = True behavior
   boolval: '',
+  multidef: 'always' }
 ```
 
 ## FAQ
@@ -116,12 +126,6 @@ last ten lines.
     elements in keys. If `true`, defaults to `/\[([^\]*)\]/g`.
   - **dot**: A pattern (applied before decoding) for separating subindexing
     elements in keys. If true, defaults to `'.'`.
-  - **multidef**: Which behavior to use when encountering the same key multiple
-    times.
-    - `"first"`: Only use the dirst definition of the value.
-    - `"last"`: Only use the last definition of the value.
-    - `"always"`: Use an array for every value, defined multiple times or not.
-      - This allows for closer matching of Python's behavior.
 - Evaluate other querystring implementations and maybe change the defaults to
   match the most common cases.
 - Make the `Loquate()` interface at least come close to following normal
