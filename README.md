@@ -52,7 +52,7 @@ var hashoptions = Loquate(location.hash.slice(2),{
 You can override pretty much any constant behavior on Loquate with options:
 
 - **sep**: The string or regex to match when splitting the query string into
-  pairs. Defaults to `/[&;]/g`.
+  pairs. Defaults to `/[&;]/g`, [per W3C recommendation][1].
 - **eq**: The string or regex to match when splitting a pair into key and value.
   Defaults to `'='`.
 - **decode**: The filter to apply to keys and values. Defaults to
@@ -81,6 +81,8 @@ You can override pretty much any constant behavior on Loquate with options:
     - `'last'`: Only use the last definition of the value.
     - `'always'`: Use an array for every value, defined multiple times or not.
       - This allows for closer matching of Python's behavior.
+
+[1]: http://www.w3.org/TR/1999/REC-html401-19991224/appendix/notes.html#h-B.2.2
 
 ## Compatiblity
 
