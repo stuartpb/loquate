@@ -107,7 +107,7 @@ querystring parsing implementations.
 ### Extending the DOM offends my delicate sensibilities.
 
 Loquate only adds `location.query` if it's definitely not going to block access
-to anything. If you can't tolerate its existance, you can delete it right after
+to anything. If you can't tolerate its existence, you can delete it right after
 including the script:
 
 ```html
