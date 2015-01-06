@@ -113,7 +113,7 @@ to anything. If you can't tolerate its existence, you can delete it right after
 including the script:
 
 ```html
-<script src="//stuartpb.github.com/loquate/loquate.js"></script>
+<script src="//stuartpb.github.io/loquate/loquate.js"></script>
 <script>if(location.query) delete location.query;</script>
 ```
 
