@@ -10,7 +10,7 @@ By default, Loquate adds a `query` property to `location` based on
 `location.search`, so if you don't need anything fancier than plain old
 `?shana=na+na&bat=ba%2fna%2fna` pair handling, you can just use
 `location.query` right after including `loquate.js`,
-[like so](http://stuartpb.github.com/loquate/example.html):
+[like so](http://stuartpb.github.io/loquate/example.html):
 
 ```html
 <script src="loquate.js"></script>
@@ -18,7 +18,7 @@ By default, Loquate adds a `query` property to `location` based on
 if(!location.query){ //if there's no query string on the URL
   document.write('<form method="GET"><input name="name" value="Stuart">'+
     '<input name="hairInches" value="1.2"> inches'+
-    '<input type="submit" value="I need some hair advice"></form>');   
+    '<input type="submit" value="I need some hair advice"></form>');
 } else {
   document.write('<h1>Should I, '
     + (location.query.name || "Anonymous") + ', cut my hair?</h1>');
