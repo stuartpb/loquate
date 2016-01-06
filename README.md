@@ -71,11 +71,11 @@ You can override pretty much any constant behavior on Loquate with options:
     element.
   - `'value'` Assign the value of the element to the key named in **boolval**.
     (If multiple values are present in this fashion, they will be assigned to
-    the key accoring to the behavior specified in **multidef**.)
+    the key accoring to the behavior specified in **multival**.)
 - **boolval**: In the absence of a recognized value for **onbool**, the value
   to assign to keys without specified values. Defaults to `true` if `boolval`
   is `undefined`.
-- **multidef**: Which behavior to use when encountering the same key multiple
+- **multival**: Which behavior to use when encountering the same key multiple
     times.
     - `'first'`: Only use the dirst definition of the value.
     - `'last'`: Only use the last definition of the value.
@@ -101,7 +101,7 @@ querystring parsing implementations.
 { sep: '&',
   onbool: 'ignore', //omit this line for keep_blank_values = True behavior
   boolval: '',
-  multidef: 'always' }
+  multival: 'always' }
 ```
 
 ## FAQ
