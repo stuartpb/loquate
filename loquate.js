@@ -75,8 +75,8 @@ var Loquate; (function(){
           || multival == "always"){
 
           //if this key has not yet been made an array
-          if(Array.isArray ? Array.isArray(query[k]) :
-            Object.prototype.toString.call(query[k]) === "[object Array]"){
+          if(Array.isArray ? !Array.isArray(query[k]) :
+            Object.prototype.toString.call(query[k]) != "[object Array]"){
             query[k] = [query[k]];
           }
           query[k].push(v);
