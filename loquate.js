@@ -67,23 +67,34 @@ var Loquate; (function(){
         v = decode(pair.slice(eqindex+sepmatch[0].length));
       }
 
-      //If K was undefined, we're ignoring it
+      // If K was undefined, we're ignoring it
       if(k !== undefined){
-        //If this key has already been defined (or we're treating ever
+        // If this key has already been defined, and we're saving arrays
         if( (Object.prototype.hasOwnProperty.call(query,k)
-          && multival != "last" && multival != "first")
-          || multival == "always"){
+          && multival != "last" && multival != "first")){
 
-          //if this key has not yet been made an array
+          // If this key has not yet been made an array
           if(Array.isArray ? !Array.isArray(query[k]) :
-            Object.prototype.toString.call(query[k]) != "[object Array]"){
+            Object.prototype.toString.call(query[k]) != "[object Array]") {
+            
+            // Put the existing value in an array
             query[k] = [query[k]];
           }
+          
+          // Add this value to the array
           query[k].push(v);
 
-        //If this key has not yet been defined
-        } else if (multival != "first"){
-          query[k] = v;
+        // If this key has not yet been defined, or should be clobbered
+        } else {
+          
+          // Start an array if we're saving all values in an array
+          if (multival == "always") {
+            query[k] = [v];
+            
+          // Save this value if previous values don't preempt it
+          } else if (multival != "first") {
+            query[k] = v;
+          }
         }
       } //if (k !== undefined)
     }
